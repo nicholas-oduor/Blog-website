@@ -23,19 +23,19 @@ def login():
     title = "Nicholas blog website"
     return render_template('auth/login.html',login_form = login_form,title=title, quote=quote)
 
-def writer_login():
-    quote = get_quote()
-    login_form = WriterLoginForm()
-    if login_form.validate_on_submit():
-        writer = Writer.query.filter_by(writer_email = login_form.writer_email.data).first()
-        if writer is not None and writer.verify_password(login_form.password.data):
-            login_user(writer,login_form.remember.data)
-            return redirect(request.args.get('next') or url_for('main.index'))
+# def writer_login():
+#     quote = get_quote()
+#     login_form = WriterLoginForm()
+#     if login_form.validate_on_submit():
+#         writer = Writer.query.filter_by(writer_email = login_form.writer_email.data).first()
+#         if writer is not None and writer.verify_password(login_form.password.data):
+#             login_user(writer,login_form.remember.data)
+#             return redirect(request.args.get('next') or url_for('main.index'))
 
-        flash('Invalid username or Password')
+#         flash('Invalid username or Password')
 
-    title = "Nicholas blog website"
-    return render_template('auth/writer_login.html',login_form = login_form,title=title, quote=quote)
+#     title = "Nicholas blog website"
+#     return render_template('auth/writer_login.html',login_form = login_form,title=title, quote=quote)
 
 @auth.route('/register',methods = ["GET","POST"])
 def register():
@@ -66,6 +66,7 @@ def writer_register():
         return redirect(url_for('auth.writer_login'))
         title = "New Account"
     return render_template('auth/writer_register.html',registration_form = form, quote=quote)
+    
 
 @auth.route('/logout')
 @login_required
