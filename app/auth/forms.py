@@ -19,3 +19,18 @@ class RegistrationForm(FlaskForm):
     def validate_username(self,data_field):
         if User.query.filter_by(username = data_field.data).first():
             raise ValidationError('That username is taken')
+
+class WriterRegistrationForm(FlaskForm):
+    writer_email = StringField('Your Email Address',validators=[Required(),Email()])
+    writer_name = StringField('Enter your username',validators = [Required()])
+    writer_password = PasswordField('Password',validators = [Required(), EqualTo('password_confirm',message = 'Passwords must match')])
+    password_confirm = PasswordField('Confirm Passwords',validators = [Required()])
+    submit = SubmitField('Writer Sign Up')
+
+    def validate_email(self,data_field):
+        if Writer.query.filter_by(writer_email =data_field.data).first():
+            raise ValidationError('There is an account with that email')
+
+    def validate_username(self,data_field):
+        if Writer.query.filter_by(writer_name = data_field.data).first():
+            raise ValidationError('That writer name is taken')
