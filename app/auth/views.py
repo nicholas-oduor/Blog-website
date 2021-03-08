@@ -51,3 +51,20 @@ def register():
         return redirect(url_for('auth.login'))
         title = "New Account"
     return render_template('auth/register.html',registration_form = form, quote=quote)
+
+@auth.route('/register/writer',methods = ["GET","POST"])
+def writer_register():
+    quote = get_quote()
+    form = WriterRegistrationForm()
+    if form.validate_on_submit():
+        writer = Writer(writer_email = form.writer_email.data, writer_name = form.writer_name.data,password = form.writer_password.data)
+        db.session.add(writer)
+        db.session.commit()
+
+        mail_message("Welcome to Nicholas Oduor blog website as a writer","email/welcome_user",writer.writer_email,writer=writer)
+
+        return redirect(url_for('auth.writer_login'))
+        title = "New Account"
+    return render_template('auth/writer_register.html',registration_form = form, quote=quote)
+
+
