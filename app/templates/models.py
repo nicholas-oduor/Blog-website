@@ -103,3 +103,28 @@ class Opinion(db.Model):
 
     def __repr__(self):
         return f'Posts {self.opinion_title}'
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.Text())
+    opinion_id = db.Column(db.Integer, db.ForeignKey('opinions.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(cls, opinion_id):
+        comments = Comment.query.filter_by(opinion_id=opinion_id).all()
+        return comments
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return f'Comments: {self.comment}'
