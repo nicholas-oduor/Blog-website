@@ -22,3 +22,17 @@ def login():
 
     title = "Nicholas blog website"
     return render_template('auth/login.html',login_form = login_form,title=title, quote=quote)
+
+def writer_login():
+    quote = get_quote()
+    login_form = WriterLoginForm()
+    if login_form.validate_on_submit():
+        writer = Writer.query.filter_by(writer_email = login_form.writer_email.data).first()
+        if writer is not None and writer.verify_password(login_form.password.data):
+            login_user(writer,login_form.remember.data)
+            return redirect(request.args.get('next') or url_for('main.index'))
+
+        flash('Invalid username or Password')
+
+    title = "Nicholas blog website"
+    return render_template('auth/writer_login.html',login_form = login_form,title=title, quote=quote)
