@@ -57,6 +57,18 @@ class Writer(UserMixin,db.Model):
     def password(self, password):
         self.writer_pass_secure = generate_password_hash(password)
 
+class Role(db.Model):
+    __tablename__ = 'roles'
+
+    id = db.Column(db.Integer,primary_key = True)
+    name = db.Column(db.String(255))
+    users = db.relationship('User',backref = 'role',lazy="dynamic")
+    writers = db.relationship('Writer',backref = 'role',lazy="dynamic")
+    
+
+    def __repr__(self):
+        return f'User {self.name}'
+
 
     def verify_password(self,password):
         return check_password_hash(self.writer_pass_secure,password)
