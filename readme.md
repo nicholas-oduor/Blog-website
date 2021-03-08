@@ -7,3 +7,6 @@ Nicholas blog website where one can create and share their opinions. Anybody can
 </td>
 </tr>
 </table>
+
+## Mobile support
+The Blog-website is compatible with devices of all sizes and all OS's, and consistent improvements are being made.
