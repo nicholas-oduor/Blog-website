@@ -9,7 +9,7 @@ Nicholas blog website where one can create and share their opinions. Anybody can
 </table>
 
 ## Demo
-<!-- Here is a working live demo : https://nicholas-blog-website.herokuapp.com/ -->
+Here is a working live demo :https://nickita-blog.herokuapp.com/
 
 
 ## Mobile support
