@@ -116,3 +116,33 @@ def comment(id):
     comm =Comment.get_comments(id)
     title = 'comments'
     return render_template('comments.html',comment = comm,title = title,quote=quote)
+
+@main.route('/new_comment/<int:opinion_id>', methods = ['GET','POST'])
+@login_required
+def new_comment(opinion_id):
+    quote = get_quote()
+    opinions = Opinion.query.filter_by(id = opinion_id).first()
+    form = CommentForm()
+
+    if form.validate_on_submit():
+        comment = form.comment.data
+
+        new_comment = Comment(comment=comment,user_id=current_user.id, opinion_id=opinion_id)
+
+        new_comment.save_comment()
+
+        return redirect(url_for('main.index'))
+    title='New comment'
+    return render_template('new_comment.html',title=title,comment_form = form,opinion_id=opinion_id,quote=quote)
+
+@main.route('/view/<int:id>', methods=['GET', 'POST'])
+@login_required
+def view(id):
+    opinion = Opinion.query.get_or_404(id)
+    opinion_comments = Comment.query.filter_by(opinion_id=id).all()
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        new_comment = Comment(opinion_id=id, comment=comment_form.comment.data, username=current_user)
+        new_comment.save_comment()
+
+    return render_template('view.html', opinion=opinion, opinion_comments=opinion_comments, comment_form=comment_form)
